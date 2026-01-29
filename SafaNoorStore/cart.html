@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>আপনার কার্ট</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h2>আপনার কার্ট</h2>
+<ul id="cart-list"></ul>
+<p>মোট মূল্য: ৳<span id="total">0</span></p>
+<button onclick="checkout()">চেকআউট</button>
+
+<script src="script.js"></script>
+<script>
+function displayCart(){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  let list = document.getElementById('cart-list');
+  list.innerHTML = '';
+  let total = 0;
+  cart.forEach((item,index)=>{
+    total += item.price*item.qty;
+    list.innerHTML += `<li>${item.name} - ৳${item.price} x ${item.qty} <button onclick="removeFromCart(${index})">❌</button></li>`;
+  });
+  document.getElementById('total').innerText = total;
+}
+function removeFromCart(index){
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  cart.splice(index,1);
+  localStorage.setItem('cart',JSON.stringify(cart));
+  displayCart();
+  updateCartUI();
+}
+function checkout(){
+  window.location.href = 'checkout.html';
+}
+displayCart();
+</script>
+</body>
+</html>
